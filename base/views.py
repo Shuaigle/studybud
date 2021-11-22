@@ -31,7 +31,7 @@ def room(request, pk):
 
 def createRoom(request):
     form = RoomForm()
-    
+
     if request.method == 'POST':
         # this print all the data
         # print(request.POST)
@@ -39,6 +39,17 @@ def createRoom(request):
         if form.is_valid():
             form.save()
             return redirect('home')
+
+    context = {'form': form}
+    return render(request, 'base/room_form.html', context)
+
+# pk=primary key
+# know what item is updating
+def updateRoom(request, pk):
+    # query
+    room = Room.objects.get(id=pk)
+    # know which room to update
+    form = RoomForm(instance=room)
 
     context = {'form': form}
     return render(request, 'base/room_form.html', context)
