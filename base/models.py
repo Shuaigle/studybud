@@ -26,6 +26,10 @@ class Room(models.Model):
     update = models.DateTimeField(auto_now=True)
     create = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        # '-' is descending order
+        ordering = ['-update', '-create']
+
     def __str__(self):
         return self.name 
 
