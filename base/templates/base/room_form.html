@@ -7,7 +7,7 @@
             <!-- Cross Site Request Forgery -->
             <!-- this provide no malicious sends -->
             {% csrf_token %}
-
+            {{form}}
             <input type="submit" value="Submit">
         </form>
     </div>
