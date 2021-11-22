@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    <div>
+        <!-- if not specified -> send to current url -->
+        <form method="POST" action="" >
+            <!-- Cross Site Request Forgery -->
+            <!-- this provide no malicious sends -->
+            {% csrf_token %}
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+{% endblock content %}
