@@ -51,5 +51,12 @@ def updateRoom(request, pk):
     # know which room to update
     form = RoomForm(instance=room)
 
+    if request.method == 'POST':
+        # need to tell which room to update
+        form = RoomForm(request.POST, instance=room)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
     context = {'form': form}
     return render(request, 'base/room_form.html', context)
