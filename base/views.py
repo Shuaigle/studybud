@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 # render model Room in
-from .models import Room
+from .models import Room, Topic
 from .forms import RoomForm
 
 # Create your views here.
@@ -19,8 +19,15 @@ def home(request):
     # variable = name.objectsattribute.method(.get/.filter/.exclude)
     # models auto generate id for them
     # this will replace the original rooms list to our Room model database
-    rooms = Room.objects.all() # all give us all Rooms in database
-    context = {'rooms': rooms}
+    # rooms = Room.objects.all() # all give us all Rooms in database
+    # we dont want all, we only want to show the chosen one
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    # query nothing -> query everything -> output everything with __name_contains
+    # "i" means insensitive -> value can be lower or uppercase 
+    rooms = Room.objects.filter(topic__name__icontains=q)
+    # Topic side bar
+    topics = Topic.objects.all()
+    context = {'rooms': rooms, 'topics': topics}
     return render(request, 'base/home.html', context)
 
 def room(request, pk):
