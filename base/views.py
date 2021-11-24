@@ -12,6 +12,12 @@ from .forms import RoomForm
 #     {'id': 3, 'name': 'Frontend developers'},
 # ]
 
+# dont use def login(), cause it already exists
+def loginPage(request):
+    context = {}
+    return render(request, 'base/login_register.html', context)
+
+
 def home(request):
     # add Room objects in home page
     # it can let us make query to database
