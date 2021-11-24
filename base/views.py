@@ -32,7 +32,11 @@ def home(request):
         )
     # Topic side bar
     topics = Topic.objects.all()
-    context = {'rooms': rooms, 'topics': topics}
+
+    # this is faster than len(rooms)
+    room_count = rooms.count()
+    
+    context = {'rooms': rooms, 'topics': topics, 'room_count': room_count}
     return render(request, 'base/home.html', context)
 
 def room(request, pk):
