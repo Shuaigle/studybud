@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.db.models import Q
 # render model Room in
 from .models import Room, Topic
 from .forms import RoomForm
@@ -17,14 +17,19 @@ def home(request):
     # it can let us make query to database
     # queryset = ModelName.objects.all()
     # variable = name.objectsattribute.method(.get/.filter/.exclude)
-    # models auto generate id for them
+    # models will auto generate id for them
     # this will replace the original rooms list to our Room model database
     # rooms = Room.objects.all() # all give us all Rooms in database
     # we dont want all, we only want to show the chosen one
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     # query nothing -> query everything -> output everything with __name_contains
     # "i" means insensitive -> value can be lower or uppercase 
-    rooms = Room.objects.filter(topic__name__icontains=q)
+    rooms = Room.objects.filter(
+        # with Q, we can add logic
+        Q(topic__name__icontains=q) | 
+        Q(name__icontains=q) |
+        Q(description__icontains=q)
+        )
     # Topic side bar
     topics = Topic.objects.all()
     context = {'rooms': rooms, 'topics': topics}
