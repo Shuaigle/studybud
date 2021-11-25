@@ -40,6 +40,10 @@ def loginPage(request):
     return render(request, 'base/login_register.html', context)
 
 
+def logoutPage(request):
+    logout(request)
+    return redirect('home')
+
 def home(request):
     # add Room objects in home page
     # it can let us make query to database
