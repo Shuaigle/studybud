@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 # render model Room in
 from .models import Room, Topic
@@ -20,6 +21,11 @@ from .forms import RoomForm
 
 # dont use def login(), cause it already exists
 def loginPage(request):
+
+    page = 'login'
+
+    if request.user.is_authenticated:
+        return redirect('home')
 
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -38,7 +44,7 @@ def loginPage(request):
         else:
             messages.error(request, 'Username or password does not exitst')
 
-    context = {}
+    context = {'page': page}
     return render(request, 'base/login_register.html', context)
 
 
@@ -72,6 +78,12 @@ def home(request):
     
     context = {'rooms': rooms, 'topics': topics, 'room_count': room_count}
     return render(request, 'base/home.html', context)
+
+def registerPage(request):
+    # we have UserCreationForm -> dont need register page
+    # page = 'register'
+    form = UserCreationForm()
+    return render(request, 'base/login_register.html', {'form': form})
 
 def room(request, pk):
     # get Room unique single value
