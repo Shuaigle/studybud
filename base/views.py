@@ -104,7 +104,9 @@ def home(request):
 def room(request, pk):
     # get Room unique single value
     room = Room.objects.get(id=pk)
-    context = {'room': room}
+    # query .model.message -> get all messages that related to this room
+    room_messages = room.message_set.all().order_by('-create')
+    context = {'room': room, 'room_messages': room_messages}
     return render(request, 'base/room.html', context)
 
 # if not login -> redirect user to login page
