@@ -28,7 +28,8 @@ def loginPage(request):
         return redirect('home')
 
     if request.method == 'POST':
-        username = request.POST.get('username')
+        # only user lowercase
+        username = request.POST.get('username').lower()
         password = request.POST.get('password')
 
         try:
@@ -51,6 +52,27 @@ def loginPage(request):
 def logoutPage(request):
     logout(request)
     return redirect('home')
+
+def registerPage(request):
+    # we have UserCreationForm -> dont need register page
+    # page = 'register'
+    form = UserCreationForm()
+
+    if request.method == 'POST':
+        # pass our username, password etc information to server
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            # we need to deal the data first, so we just save it first
+            # but not commit
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'An error occurred during registration')
+
+    return render(request, 'base/login_register.html', {'form': form})
 
 def home(request):
     # add Room objects in home page
@@ -78,12 +100,6 @@ def home(request):
     
     context = {'rooms': rooms, 'topics': topics, 'room_count': room_count}
     return render(request, 'base/home.html', context)
-
-def registerPage(request):
-    # we have UserCreationForm -> dont need register page
-    # page = 'register'
-    form = UserCreationForm()
-    return render(request, 'base/login_register.html', {'form': form})
 
 def room(request, pk):
     # get Room unique single value
