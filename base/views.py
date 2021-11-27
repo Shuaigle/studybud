@@ -82,7 +82,7 @@ def home(request):
     # models will auto generate id for them
     # this will replace the original rooms list to our Room model database
     # rooms = Room.objects.all() # all give us all Rooms in database
-    # we dont want all, we only want to show the chosen one
+    # we don't want all, we only want to show the chosen one
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     # query nothing -> query everything -> output everything with __name_contains
     # "i" means insensitive -> value can be lower or uppercase 
@@ -97,15 +97,19 @@ def home(request):
 
     # this is faster than len(rooms)
     room_count = rooms.count()
+
+    # shows with specific urls
+    room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
     
-    context = {'rooms': rooms, 'topics': topics, 'room_count': room_count}
+    context = {'rooms': rooms, 'topics': topics, 'room_count': room_count,
+               'room_messages': room_messages}
     return render(request, 'base/home.html', context)
 
 def room(request, pk):
     # get Room unique single value
     room = Room.objects.get(id=pk)
     # query .model.message -> get all messages that related to this room
-    room_messages = room.message_set.all().order_by('-create')
+    room_messages = room.message_set.all() # .order_by('-create') because we did this in class Message
     participants = room.participants.all()
     if request.method == 'POST':
         message = Message.objects.create(

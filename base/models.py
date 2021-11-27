@@ -48,6 +48,11 @@ class Message(models.Model):
     update = models.DateTimeField(auto_now=True)
     create = models.DateTimeField(auto_now_add=True)
 
+
+    class Meta:
+            # '-' is descending order
+            ordering = ['-update', '-create']
+
     # we only want first 50 chars
     def __str__(self):
-        return self.body[0:50] 
+        return self.body[0:50]     
