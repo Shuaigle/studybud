@@ -22,3 +22,4 @@ var/
 *.log
 dj1/
 *~
+base/tests.py
