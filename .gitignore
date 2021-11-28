@@ -21,3 +21,4 @@ var/
 *.egg
 *.log
 dj1/
+*~
