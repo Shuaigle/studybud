@@ -1,0 +1,6 @@
+*.sqlite
+*.pyc
+.settings
+.cache
+*.coverage
+*coverage.xml

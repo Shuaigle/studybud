@@ -1,4 +1,4 @@
-# Studybud Web
+# Studybud Website
 
 ## views/urls -> templates -> database/admin 
 ## -> CRUD and security input (csrf) 
