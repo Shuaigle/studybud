@@ -2,7 +2,7 @@
 <hr>
 {% for message in room_messages %}
 <div>
-    <small>@{{message.user}} {{message.create|timesince}}</small>
+    <small><a href="{% url 'user-profile' message.user.id %}">@{{message.user}}</a> {{message.create|timesince}}</small>
     <small>replied to "{{message.room}}"</small>
 
     <!-- use message without message.body because __str__ shows only first 50 chars -->
